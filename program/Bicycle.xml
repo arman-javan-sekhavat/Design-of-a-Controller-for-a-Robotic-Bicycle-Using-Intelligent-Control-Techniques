@@ -1,0 +1,70 @@
+﻿<mujoco model="Bicycle">
+
+	<asset>
+		<texture name="grid" type="2d" builtin="checker" width="512" height="512" rgb1=".1 .2 .3" rgb2=".2 .3 .4"/>
+		<material name="grid" texture="grid" texrepeat="1 1" texuniform="true" reflectance=".2"/>
+		<mesh name="chassis" file="front.stl" scale="0.001 0.001 0.001"/>
+		<mesh name="rearWheel" file="rear_wheel.stl" scale="0.001 0.001 0.001"/>
+		<mesh name="frontWheel" file="front_wheel.stl" scale="0.001 0.001 0.001"/>
+		<mesh name="handleBar" file="handleBar.stl" scale="0.001 0.001 0.001"/>
+		<mesh name="flyWheel" file="flyWheel.stl" scale="0.001 0.001 0.001"/>
+		<hfield name="right_wall" file="R.png" size="5.0 5.0 3.0 0.25"/>
+		<hfield name="left_wall" file="L.png" size="5.0 5.0 3.0 0.25"/>
+	</asset>
+
+	<worldbody>
+		<geom name="ground" type="plane" size="0 0 0.1" material="grid"/>
+		<geom name="rWall" type="hfield" hfield="right_wall" pos="0 0 -2"/>
+		<geom name="lWall" type="hfield" hfield="left_wall" pos="0 0 -2"/>
+		<light directional="false" pos="0 0 30" dir="0 0 -1" diffuse="1 1 1" active="true"/>
+
+		<body name="main" pos="0.0 -5.0 1.0">
+			<freejoint/>
+			<geom name="base" type="mesh" mesh="chassis" pos="0 0 0" rgba="1 1 1 1.0"/>
+
+			<body xyaxes="1 0 0 0 1 0" pos="0.0 -0.85902 -0.10438">
+				<geom type="mesh" mesh="rearWheel" rgba="0.11 0.11 0.11 1"/>
+				<joint name="rearWheelJoint" type="hinge" pos="0 0 0" axis="-1 0 0"/>
+			</body>
+
+			<body zaxis="0.0 -0.00868 0.04924" pos="0.0 0.21223 -0.32757">
+				<geom type="mesh" mesh="handleBar" rgba="1 1 1 1"/>
+				<joint name="handleBarJoint" type="hinge" pos="0 0 0" axis="0 0 -1" range="-60 +60"/>
+
+				<body xyaxes="1 0 0 0 1 0" pos="0.0 0.0 -0.27021">
+					<geom name="fWheel" type="mesh" mesh="frontWheel" rgba="0.11 0.11 0.11 1"/>
+					<joint name="frontWheelJoint" type="hinge" pos="0 0 0" axis="-1 0 0"/>
+				</body>
+				
+			</body>
+
+			<body zaxis="0.0 0.191 -0.062" pos="0.0 0.11876 0.05043">
+				<geom type="mesh" mesh="flyWheel" rgba="0.11 0.11 0.11 1"/>
+				<joint name="flyWheelJoint" type="hinge" pos="0 0 0" axis="0 0 1"/>
+			</body>
+
+		</body>
+
+
+	</worldbody>
+
+	<actuator>
+		<motor name="rearWheelMotor" joint="rearWheelJoint" ctrlrange="-500 +500"/>
+		<motor name="handleBarMotor"  joint="handleBarJoint"  ctrlrange="-500 +500"/>
+		<motor name="flyWheelMotor"  joint="flyWheelJoint"  ctrlrange="-500 +500"/>
+	</actuator>
+
+
+	<sensor>
+		<framepos objtype="geom" reftype="geom" objname="base" refname="ground"/>
+		<framexaxis objtype="geom" reftype="geom" objname="base" refname="ground"/>
+		<frameangvel objtype="geom" reftype="geom" objname="base" refname="ground"/>
+		<distance name="rCollision" cutoff="1.0" geom1="rWall" geom2="fWheel"/>
+		<distance name="lCollision" cutoff="1.0" geom1="lWall" geom2="fWheel"/>
+		<jointvel joint="rearWheelJoint"/>
+		<jointpos joint="rearWheelJoint"/>
+	</sensor>
+
+
+
+</mujoco>
