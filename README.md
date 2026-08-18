@@ -30,3 +30,9 @@ The 3D model of the robotic bicycle is designed using SOLIDWORKS. Then, each par
 
 ## Simulation of the Walls in the MuJoCo Environment
 <img width="577" height="555" alt="10" src="https://github.com/user-attachments/assets/76433625-0db6-4643-98e1-b4c7c3bdcc2b" />
+
+## How to Use
+1) Clone the repository
+2) Download OpenCV 4.9.0 for Windows from https://github.com/opencv/opencv/releases/tag/4.9.0
+3) Copy files "opencv_world490.dll" and "opencv_world490d.dll" into "program/"
+4) Simply run the executable "program/Bicycle.exe", type 1 and press Enter to a view a simulation of the controlled system
